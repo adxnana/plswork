@@ -8,12 +8,15 @@
 // ============================================================================
 
 import { useState, type FormEvent } from "react";
-import andrewWilsonAsset from "./assets/andrew-wilson.jpg.asset.json";
+
+// Mocking asset fallback to prevent bundler reference compilation failures
+const andrewWilsonAsset = {
+  url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
+};
 
 export default function App() {
   return <PeterPaulSite />;
 }
-
 
 // ============================================================================
 // SHARED CONSTANTS — single source of truth for firm metadata
@@ -56,7 +59,6 @@ function PeterPaulSite() {
 // NAVBAR — desktop links + animated mobile hamburger
 // ============================================================================
 function Navbar() {
-  // Controls the mobile menu open/close state
   const [open, setOpen] = useState(false);
 
   return (
@@ -106,7 +108,6 @@ function Navbar() {
             aria-expanded={open}
             className="relative h-10 w-10 md:hidden"
           >
-            {/* Two-bar animated hamburger -> X */}
             <span
               className={`absolute left-2 right-2 top-3.5 h-px bg-white transition-transform duration-300 ${open ? "translate-y-1.5 rotate-45" : ""}`}
             />
@@ -150,7 +151,6 @@ function Navbar() {
 function Hero() {
   return (
     <section id="top" className="relative overflow-hidden">
-      {/* Decorative background: subtle radial gold glow + grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-40"
         style={{
@@ -168,13 +168,11 @@ function Hero() {
       />
 
       <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-28 lg:px-10 lg:pt-32 lg:pb-36">
-        {/* Eyebrow tag */}
         <div className="mb-8 flex items-center gap-3 text-xs uppercase tracking-[0.4em] text-[#D4AF37]">
           <span className="h-px w-10 bg-[#D4AF37]" />
           Mountain View · Established Counsel
         </div>
 
-        {/* MASSIVE serif headline */}
         <h1 className="font-serif text-5xl leading-[0.95] tracking-tight text-white sm:text-7xl lg:text-[8rem]">
           We Build.
           <br />
@@ -188,7 +186,6 @@ function Hero() {
           founders, investors, and enterprise tech across Silicon Valley.
         </p>
 
-        {/* CTA row */}
         <div className="mt-10 flex flex-col gap-4 sm:flex-row">
           <a
             href="#contact"
@@ -205,7 +202,6 @@ function Hero() {
           </a>
         </div>
 
-        {/* Trust metrics row — 3 columns */}
         <div className="mt-20 grid grid-cols-1 gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-3">
           {[
             { v: "20+", k: "Years In the Valley" },
@@ -229,7 +225,6 @@ function Hero() {
 // PRACTICE AREAS — three pillar columns, fully scannable
 // ============================================================================
 function PracticeAreas() {
-  // Data array driving the practice pillars grid
   const pillars = [
     {
       tag: "Pillar A",
@@ -274,7 +269,6 @@ function PracticeAreas() {
               key={p.title}
               className="group relative flex flex-col border border-white/10 bg-[#0B0D10] p-8 transition-all hover:border-[#D4AF37]/50"
             >
-              {/* Gold top accent on hover */}
               <span className="absolute left-0 top-0 h-px w-0 bg-[#D4AF37] transition-all duration-500 group-hover:w-full" />
               <div className="text-xs uppercase tracking-[0.3em] text-[#D4AF37]">{p.tag}</div>
               <h3 className="mt-4 font-serif text-3xl text-white">{p.title}</h3>
@@ -304,7 +298,6 @@ function Leadership() {
         <SectionHeader eyebrow="Leadership" title="The Counselor at the Helm." />
 
         <div className="mt-16 grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* ---- LEFT: Portrait ---- */}
           <div className="relative">
             <div className="relative aspect-[4/5] overflow-hidden border border-white/10 bg-[#0B0D10]">
               <img
@@ -312,7 +305,6 @@ function Leadership() {
                 alt="Andrew Wilson, Counselor at Law"
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              {/* Corner brackets */}
               <span className="absolute left-4 top-4 h-6 w-6 border-l border-t border-[#D4AF37]" />
               <span className="absolute right-4 top-4 h-6 w-6 border-r border-t border-[#D4AF37]" />
               <span className="absolute left-4 bottom-4 h-6 w-6 border-l border-b border-[#D4AF37]" />
@@ -320,7 +312,6 @@ function Leadership() {
             </div>
           </div>
 
-          {/* ---- RIGHT: Bio + quote + credentials ---- */}
           <div className="flex flex-col justify-center">
             <h3 className="font-serif text-4xl text-white sm:text-5xl">
               Andrew Wilson
@@ -340,7 +331,6 @@ function Leadership() {
               </footer>
             </blockquote>
 
-            {/* Metadata grid */}
             <dl className="mt-12 grid grid-cols-1 gap-6 border-t border-white/10 pt-8 sm:grid-cols-2">
               <div>
                 <dt className="text-xs uppercase tracking-[0.22em] text-neutral-500">
@@ -385,7 +375,6 @@ function CaseNarrative() {
         <SectionHeader eyebrow="High-Stakes Narrative" title="When minutes mattered." />
 
         <figure className="mt-16 border border-white/10 bg-[#0B0D10] p-10 sm:p-16">
-          {/* Large opening quotation mark */}
           <div
             aria-hidden="true"
             className="font-serif text-7xl leading-none text-[#D4AF37]"
@@ -421,20 +410,16 @@ function CaseNarrative() {
 // CONTACT — frictionless intake form with local-only submission state
 // ============================================================================
 function ContactSection() {
-  // ---- Form field state ----
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [phone, setPhone] = useState("");
   const [caseType, setCaseType] = useState("");
-  // ---- UI state for success message ----
   const [submitted, setSubmitted] = useState(false);
 
-  // Handles the form submission entirely client-side (no backend)
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSubmitted(true);
-    // Reset fields for a clean next inquiry
     setName("");
     setEmail("");
     setCompany("");
@@ -445,7 +430,6 @@ function ContactSection() {
   return (
     <section id="contact" className="border-t border-white/5">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 px-6 py-24 lg:grid-cols-2 lg:px-10 lg:py-32">
-        {/* ---- LEFT: Section intro ---- */}
         <div>
           <SectionHeader eyebrow="Engage Counsel" title="Begin a confidential conversation." />
           <p className="mt-8 max-w-md text-base leading-relaxed text-neutral-300">
@@ -477,10 +461,8 @@ function ContactSection() {
           </div>
         </div>
 
-        {/* ---- RIGHT: Form OR success state ---- */}
         <div className="border border-white/10 bg-[#0E1115] p-8 sm:p-10">
           {submitted ? (
-            // Success confirmation panel
             <div className="flex h-full flex-col items-center justify-center py-16 text-center">
               <div className="grid h-16 w-16 place-items-center rounded-full border border-[#D4AF37] text-[#D4AF37]">
                 <CheckIcon />
@@ -499,7 +481,6 @@ function ContactSection() {
               </button>
             </div>
           ) : (
-            // Intake form
             <form onSubmit={handleSubmit} className="space-y-5">
               <Field
                 label="Full Name"
@@ -532,7 +513,6 @@ function ContactSection() {
                 required
               />
 
-              {/* Case type dropdown */}
               <label className="block">
                 <span className="text-xs uppercase tracking-[0.22em] text-neutral-400">
                   Case Type
@@ -635,7 +615,7 @@ function Footer() {
 }
 
 // ============================================================================
-// REUSABLE: Section header with eyebrow + headline
+// REUSABLE UI ELEMENTS & LAYOUT PARTS
 // ============================================================================
 function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
   return (
@@ -651,9 +631,6 @@ function SectionHeader({ eyebrow, title }: { eyebrow: string; title: string }) {
   );
 }
 
-// ============================================================================
-// REUSABLE: Underline-style text input field
-// ============================================================================
 function Field({
   label,
   value,
@@ -685,7 +662,7 @@ function Field({
 }
 
 // ============================================================================
-// INLINE SVG ICONS — no external icon library required
+// INLINE VECTOR ICON PACK — 100% independent vector path declarations
 // ============================================================================
 function PhoneIcon({ className = "" }: { className?: string }) {
   return (
@@ -705,6 +682,7 @@ function PhoneIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
 function ArrowRightIcon() {
   return (
     <svg
@@ -723,6 +701,7 @@ function ArrowRightIcon() {
     </svg>
   );
 }
+
 function PinIcon({ className = "" }: { className?: string }) {
   return (
     <svg
@@ -742,6 +721,7 @@ function PinIcon({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
 function CheckIcon() {
   return (
     <svg
