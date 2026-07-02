@@ -10,9 +10,9 @@
 import { useState, type FormEvent } from "react";
 import andrewWilsonImg from "./assets/andrew-wilson.jpg";
 
-// Mocking asset fallback to prevent bundler reference compilation failures
+// Single source of truth for the local header asset
 const andrewWilsonAsset = {
-  url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
+  url: andrewWilsonImg
 };
 
 export default function App() {
