@@ -8,6 +8,7 @@
 // ============================================================================
 
 import { useState, type FormEvent } from "react";
+import andrewWilsonImg from "./assets/andrew-wilson.jpg";
 
 // Mocking asset fallback to prevent bundler reference compilation failures
 const andrewWilsonAsset = {
